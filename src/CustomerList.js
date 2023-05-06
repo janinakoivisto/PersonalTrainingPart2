@@ -9,13 +9,11 @@ const CustomerList = () => {
     const [customers,
         setCustomers] = useState([]);
 
-
     useEffect(() => {
         fetch('https://traineeapp.azurewebsites.net/api/customers')
             .then(response => response.json())
             .then(data => setCustomers(data.content));
     }, []);
-
 
     const columnDefs = [
         {
@@ -70,22 +68,28 @@ const CustomerList = () => {
                     Delete
                 </Button>
             )
-        },{
+        }, {
             headerName: "Edit",
             width: 110,
             cellRenderer: (params) => (
                 <Button>
-                <Link to={`/editcustomer/${params.data.links[0].href.split('/').pop()}`} className="btn-edit">
-                    Go to editing
-                </Link>
+                    <Link
+                        to={`/editcustomer/${params
+                        .data
+                        .links[0]
+                        .href
+                        .split('/')
+                        .pop()}`}
+                        className="btn-edit">
+                        Go to editing
+                    </Link>
                 </Button>
             )
         }
-        
 
     ];
 
-    const handleDelete = async (customer) => {
+    const handleDelete = async(customer) => {
         const url = 'https://traineeapp.azurewebsites.net/api/customers';
         const confirmed = await new Promise((resolve) => {
             setTimeout(() => {
@@ -93,26 +97,25 @@ const CustomerList = () => {
             }, 100);
         });
         if (confirmed) {
-        fetch(customer.links[0].href, {method: 'DELETE'}).then(() => {
-            setCustomers(customers.filter(cust => cust !== customer));
-        }).catch(error => console.error(error));
-    }};
+            fetch(customer.links[0].href, {method: 'DELETE'}).then(() => {
+                setCustomers(customers.filter(cust => cust !== customer));
+            }).catch(error => console.error(error));
+        }
+    };
 
-
-      
     return (
         <Container>
             <Container>
                 <div>
-                <div
-    className="ag-theme-alpine"
-    style={{
-    height: 700,
-    width: 1250
-    }}>
-    <h1>Customers</h1>
-    <AgGridReact rowData={customers} columnDefs={columnDefs}/>
-</div>
+                    <div
+                        className="ag-theme-alpine"
+                        style={{
+                        height: 700,
+                        width: 1250
+                    }}>
+                        <h1>Customers</h1>
+                        <AgGridReact rowData={customers} columnDefs={columnDefs}/>
+                    </div>
 
                 </div>
                 <Box

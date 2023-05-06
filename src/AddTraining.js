@@ -3,6 +3,9 @@ import {Box, Button, Container, TextField} from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {StaticDateTimePicker} from '@mui/x-date-pickers/StaticDateTimePicker';
 
 const AddTraining = () => {
     const [date,
@@ -60,15 +63,20 @@ const AddTraining = () => {
                 height: '100vh'
             }}>
                 <h1>Add Training</h1>
-                <TextField
-                    label=""
-                    type="datetime-local"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    sx={{
-                    my: 2,
-                    width: '50%'
-                }}/>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <StaticDateTimePicker
+                        value={date}
+                        onChange={(newDate) => setDate(newDate)}
+                        renderInput={(params) => (<TextField
+                        {...params}
+                        label="Date and Time"
+                        value={date}
+                        sx={{
+                        my: 2,
+                        width: '50%'
+                    }}/>)}
+                        orientation="landscape"/>
+                </LocalizationProvider>
                 <TextField
                     label="Duration (min)"
                     type="number"
